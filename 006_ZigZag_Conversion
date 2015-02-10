@@ -1,0 +1,41 @@
+public class Solution {
+    private void initilizeArrayList(ArrayList<ArrayList<Character>> result, int nRows){
+        for(int i=0;i<nRows;i++) result.add(new ArrayList<Character>());
+    }
+    
+    private String convertToString( ArrayList<ArrayList<Character>> result){
+        //convert back to string
+        StringBuilder stringResult=new StringBuilder();
+        for(ArrayList<Character> temp1: result)
+            for(Character temp2:temp1)
+                stringResult.append(temp2);
+        return stringResult.toString();
+    }
+    
+    public String convert(String s, int nRows) {
+        if(nRows==1) return s;
+        ArrayList<ArrayList<Character>> result = new ArrayList<ArrayList<Character>>();
+        initilizeArrayList(result,nRows);
+        boolean up=true;
+        int current=0;
+        for(int i=0;i<s.length();i++){
+            result.get(current).add(s.charAt(i));
+            if(up){
+                if(current+1==nRows){
+                    up=false;
+                    current--;
+                }
+                else current++;
+            }
+            else{
+                if(current-1<0){
+                    up=true;
+                    current++;
+                }
+                else current--;
+            }
+        }
+        return convertToString(result);
+        
+    }
+}
