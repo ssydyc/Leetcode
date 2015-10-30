@@ -18,16 +18,11 @@ public class Codec {
     
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        if(root==null) return "";
+        TreeNode nil=new TreeNode(0);
+        nil.right=root;
         StringBuilder res=new StringBuilder();
         Stack<TreeNode> sk=new Stack<TreeNode>();
-        while(root!=null){
-            sk.push(root);
-            res.append(Integer.toString(root.val));
-            res.append('|');
-            root=root.left;
-        }
-        res.append("#|"); // end of left tree
+        sk.push(nil);
         while(!sk.empty()){
             TreeNode cur=sk.pop();
             if(cur.right!=null){
@@ -52,13 +47,11 @@ public class Codec {
         if(data.equals("")) return null;
         int index=0;
         Stack<TreeNode> sk=new Stack<TreeNode>();
-        String s1=getString(0,data);
-        index+=s1.length()+1;
-        TreeNode root=new TreeNode(Integer.parseInt(s1));
-        sk.push(root);
-        boolean left=true;
+        TreeNode nil=new TreeNode(0);
+        sk.push(nil);
+        boolean left=false;
         while(index<data.length()){
-            s1=getString(index,data);
+            String s1=getString(index,data);
             index+=s1.length()+1;
             if(s1.equals("#")){
                 left=false;
@@ -79,7 +72,7 @@ public class Codec {
                 left=true;
             }
         }
-        return root;
+        return nil.right;
     }
 }
 
