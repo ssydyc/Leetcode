@@ -9,26 +9,26 @@ class position{
 public class Solution {
     // add Queue by row
     
-    private boolean isValid(int row, int col, HashSet<position> pos){
+    private boolean isValid(int row, int col, List<position> pos){
         for(position temp: pos){
             if(temp.y==col || Math.abs(temp.x-row)==Math.abs(temp.y-col)) return false;
         }
         return true;
     }
     
-    private void addResult(List<List<String>> res, HashSet<position> pos, int n){
-        char[][] temp= new char[n][n];
-        for(position temp1: pos){
-            Arrays.fill(temp[temp1.x],'.');
-            temp[temp1.x][temp1.y]='Q';
-        }
+    private void addResult(List<List<String>> res, List<position> pos, int n){
+        char[] temp= new char[n];
+        Arrays.fill(temp,'.');
         List<String> temp2= new ArrayList<String>();
-        for(char[] temp1: temp)
-            temp2.add(new String(temp1));
+        for(position temp1: pos){
+            temp[temp1.y]='Q';
+            temp2.add(new String(temp));
+            temp[temp1.y]='.';
+        }
         res.add(temp2);
     }
     
-    private void helper(int cur, int n, List<List<String>> res, HashSet<position> pos){
+    private void helper(int cur, int n, List<List<String>> res, List<position> pos){
         if(cur==n) {
             addResult(res, pos,n);
            return;
@@ -39,13 +39,13 @@ public class Solution {
                 position temp=new position(cur,col);
                 pos.add(temp);
                 helper(cur+1,n,res,pos);
-                pos.remove(temp);
+                pos.remove(pos.size()-1);
             }
         }
     }
     
     public List<List<String>> solveNQueens(int n) {
-        HashSet<position> pos= new HashSet<position>();
+        List<position> pos= new ArrayList<position>();
         List<List<String>> res= new ArrayList<List<String>>();
         helper(0, n, res, pos);
         return res;
